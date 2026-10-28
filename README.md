@@ -110,7 +110,7 @@ Requires Conn3x v0.6.5 or later and systemd on each host, with outbound HTTPS to
 
 ## Tested on
 
-Rocky Linux 10, Fedora 45, Ubuntu 24.04 and Debian 13. CI applies [examples/local](examples/local) to each on amd64, checks that the second plan has no changes, and fetches a static page through a reverse proxy over plain HTTP. The tests run in containers with SELinux off, so an enforcing host hasn't been tested yet. Certificates aren't part of the tests, since a test container has no public DNS name.
+Rocky Linux 10, Fedora 45, Ubuntu 24.04 and Debian 13. CI applies [examples/local](examples/local) to each on amd64, checks that the second plan has no changes, and fetches a static page through a reverse proxy over plain HTTP. The CI containers run with SELinux off. The example was also applied by hand to a Rocky Linux 10 droplet with SELinux enforcing, where Caddy runs as `unconfined_service_t`: the second plan had no changes, the proxied page came back, and the audit log had no denials. Certificates aren't part of the tests, since a test container has no public DNS name.
 
 ## License
 
