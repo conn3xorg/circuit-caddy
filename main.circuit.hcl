@@ -63,6 +63,16 @@ circuit "caddy_deb" {
     }
   }
 
+  # Pins Caddy at the circuit's version, so apt upgrade leaves it there.
+  # A pin rather than apt-mark hold: Conn3x reads a held package as not
+  # installed, so a package step on it never settles.
+  step "pin" {
+    file {
+      path    = "/etc/apt/preferences.d/caddy"
+      content = "Package: caddy\nPin: version ${local.version}\nPin-Priority: 1001\n"
+    }
+  }
+
   step "caddy" {
     package {
       name    = "caddy"
@@ -159,11 +169,12 @@ circuit "caddy" {
     become           = var.ssh_become
   }
 
-  # Restarts Caddy when the pinned version changes, so the new binary runs.
+  # Restarts Caddy when the pinned version or the unit file changes, so the
+  # new binary and unit run.
   step "upgraded" {
     command {
-      command  = "systemctl try-restart caddy"
-      triggers = { version = local.version }
+      command  = "systemctl daemon-reload && systemctl try-restart caddy"
+      triggers = { version = local.version, unit = filesha256("${path.module}/files/caddy.service") }
     }
     depends_on = [conn3x_package.caddy_deb__caddy, conn3x_file.caddy_rpm__unit]
   }

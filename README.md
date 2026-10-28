@@ -59,9 +59,9 @@ To try it on a throwaway container first, see [examples/local](examples/local).
 On each host, in order:
 
 1. Installs Caddy 2.11.7.
-   - On Debian and Ubuntu, from Caddy's own apt repository at `dl.cloudsmith.io/public/caddy/stable`, with the signing key in [files](files), copied from that repository.
+   - On Debian and Ubuntu, from Caddy's own apt repository at `dl.cloudsmith.io/public/caddy/stable`, with the signing key in [files](files), copied from that repository. An apt pin in `/etc/apt/preferences.d/caddy` keeps `apt upgrade` from moving it off that version.
    - On Rocky Linux, Fedora and the rest of the Red Hat family, from the release archive on GitHub, checked against a pinned SHA-256. Caddy's RPMs come from a COPR repository that can trail releases and can't be pinned to an exact version, so the circuit does what the package would: it creates the `caddy` user and group with a home of `/var/lib/caddy`, links `/usr/bin/caddy` to the binary under `/opt/caddy`, and installs Caddy's own [unit file](files/caddy.service) as `/etc/systemd/system/caddy.service`.
-2. Restarts Caddy when the version the circuit pins changes, so a new release of this circuit runs the new binary.
+2. Reloads systemd and restarts Caddy when the version the circuit pins or its unit file changes, so a new release of this circuit runs the new binary.
 3. Renders the Caddyfile from `sites` and `email` to `/etc/caddy/Caddyfile.conn3x`.
 4. Runs `caddy validate` on that file. If it passes, copies it to `/etc/caddy/Caddyfile`. If someone edits the live Caddyfile by hand, the next apply puts it back.
 5. Starts Caddy now and at boot, and reloads it after the Caddyfile changes.
@@ -81,7 +81,7 @@ Before the circuit runs, the `conn3x_host` data source reads each host's family 
 - Firewall ports. Open 80 and 443, or whatever your site addresses use, yourself or with the [firewall circuit](https://github.com/conn3xorg/circuit-firewall).
 - The files a static site serves. Put them under `root` with your own steps, readable by the `caddy` user.
 - Caddy plugins. The circuit installs the standard build.
-- Choosing the Caddy version. It's pinned per release of this circuit. On Debian and Ubuntu the package isn't held, so `apt upgrade` can install a newer Caddy than the pin.
+- Choosing the Caddy version. It's pinned per release of this circuit.
 - Removing Caddy. Deleting the module leaves Caddy installed and running.
 
 ## Inputs
@@ -110,7 +110,7 @@ Requires Conn3x v0.6.5 or later and systemd on each host, with outbound HTTPS to
 
 ## Tested on
 
-Rocky Linux 10, Fedora 45, Ubuntu 24.04 and Debian 13. CI applies [examples/local](examples/local) to each on amd64, checks that the second plan has no changes, and fetches a static page through a reverse proxy over plain HTTP. Certificates aren't part of the tests, since a test container has no public DNS name.
+Rocky Linux 10, Fedora 45, Ubuntu 24.04 and Debian 13. CI applies [examples/local](examples/local) to each on amd64, checks that the second plan has no changes, and fetches a static page through a reverse proxy over plain HTTP. The tests run in containers with SELinux off, so an enforcing host hasn't been tested yet. Certificates aren't part of the tests, since a test container has no public DNS name.
 
 ## License
 
