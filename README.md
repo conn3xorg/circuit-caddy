@@ -53,7 +53,7 @@ hosts = {
 }
 ```
 
-To try it on a throwaway container first, see [examples/local](examples/local).
+To try it on a throwaway container first, see [examples/local](examples/local). To create a server and serve a page with a real certificate in one apply, see [examples/gcp](examples/gcp), on Google Cloud.
 
 ## What it does
 
