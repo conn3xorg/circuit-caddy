@@ -67,7 +67,7 @@ variable "sites" {
 variable "email" {
   type        = string
   default     = null
-  description = "Email address for the ACME account Caddy gets certificates with. Let's Encrypt uses it for expiry warnings."
+  description = "Email address for the ACME account Caddy gets certificates with."
 
   validation {
     condition     = var.email == null || can(regex("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$", coalesce(var.email, "x@y.z")))

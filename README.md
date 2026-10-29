@@ -30,7 +30,7 @@ module "caddy" {
 
 Then run `conn3x init` and `conn3x apply`. A second `conn3x plan` says `No changes.`
 
-For a public name such as `photos.example.com`, Caddy gets a certificate from Let's Encrypt on first request, so the name's DNS has to point at the host and ports 80 and 443 have to be open. Opening them is up to you; the [firewall circuit](https://github.com/conn3xorg/circuit-firewall) can do it:
+For a public name such as `photos.example.com`, Caddy gets a certificate from Let's Encrypt as soon as it loads the site, so the name's DNS has to point at the host and ports 80 and 443 have to be open. Opening them is up to you; the [firewall circuit](https://github.com/conn3xorg/circuit-firewall) can do it:
 
 ```hcl
 module "firewall" {
@@ -95,7 +95,7 @@ Before the circuit runs, the `conn3x_host` data source reads each host's family 
 | `ssh_known_hosts_file` | string | `null` | known_hosts file to check host keys against. When null, `~/.ssh/known_hosts`. Not used for a host object with `host_key`. |
 | `ssh_become` | bool | `false` | Run commands as root through sudo. Set it when `ssh_user` isn't root. |
 | `sites` | map(object) | `{}` | Sites to serve, by Caddy site address, such as `"example.com"`, `"http://localhost"` or `":8080"`. Each takes `reverse_proxy`, a list of upstreams such as `["localhost:3000"]`, or `root`, an absolute path to serve files from, but not both. `extra` is a string of further Caddyfile lines for the site. |
-| `email` | string | `null` | Email address for the ACME account Caddy gets certificates with. Let's Encrypt uses it for expiry warnings. |
+| `email` | string | `null` | Email address for the ACME account Caddy gets certificates with. |
 
 ## Outputs
 
@@ -110,7 +110,7 @@ Requires Conn3x v0.6.5 or later and systemd on each host, with outbound HTTPS to
 
 ## Tested on
 
-Rocky Linux 10, Fedora 45, Ubuntu 24.04 and Debian 13. CI applies [examples/local](examples/local) to each on amd64, checks that the second plan has no changes, and fetches a static page through a reverse proxy over plain HTTP. The CI containers run with SELinux off. The example was also applied by hand to a Rocky Linux 10 droplet with SELinux enforcing, where Caddy runs as `unconfined_service_t`: the second plan had no changes, the proxied page came back, and the audit log had no denials. The same held on Fedora 44 and AlmaLinux 10 droplets with SELinux enforcing, and again on both after a reboot. Certificates aren't part of the tests, since a test container has no public DNS name.
+Rocky Linux 10, Fedora 45, Ubuntu 24.04 and Debian 13. CI applies [examples/local](examples/local) to each on amd64, checks that the second plan has no changes, and fetches a static page through a reverse proxy over plain HTTP. The CI containers run with SELinux off. The example was also applied by hand to a Rocky Linux 10 droplet with SELinux enforcing, where Caddy runs as `unconfined_service_t`: the second plan had no changes, the proxied page came back, and the audit log had no denials. The same held on Fedora 44 and AlmaLinux 10 droplets with SELinux enforcing, and again on both after a reboot. CI doesn't cover certificates, since a test container has no public DNS name. They were tried by hand on an Ubuntu 24.04 droplet, with a site named after its address through sslip.io: Caddy got a certificate from Let's Encrypt, the page came back over HTTPS, and the second plan had no changes.
 
 ## License
 
