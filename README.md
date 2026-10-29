@@ -8,7 +8,7 @@ Every change to `sites` shows up in `conn3x plan` as a diff of the Caddyfile. Th
 
 ```hcl
 module "caddy" {
-  source = "github.com/conn3xorg/circuit-caddy?ref=v0.2.0"
+  source = "github.com/conn3xorg/circuit-caddy?ref=v0.2.1"
 
   hosts                = { edge = "203.0.113.10" }
   ssh_private_key_file = "~/.ssh/id_ed25519"
@@ -34,7 +34,7 @@ For a public name such as `photos.example.com`, Caddy gets a certificate from Le
 
 ```hcl
 module "firewall" {
-  source = "github.com/conn3xorg/circuit-firewall?ref=v0.1.0"
+  source = "github.com/conn3xorg/circuit-firewall?ref=v0.2.0"
 
   hosts = { edge = "203.0.113.10" }
   allow = [{ port = "80/tcp" }, { port = "443/tcp" }]
