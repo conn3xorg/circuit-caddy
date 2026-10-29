@@ -30,7 +30,7 @@ module "caddy" {
 
 Then run `conn3x init` and `conn3x apply`. A second `conn3x plan` says `No changes.`
 
-For a public name such as `photos.example.com`, Caddy gets a certificate from Let's Encrypt on first request, so the name's DNS has to point at the host and ports 80 and 443 have to be open. Opening them is up to you; the [firewall circuit](https://github.com/conn3xorg/circuit-firewall) can do it:
+For a public name such as `photos.example.com`, Caddy gets a certificate from Let's Encrypt as soon as it loads the site, so the name's DNS has to point at the host and ports 80 and 443 have to be open. Opening them is up to you; the [firewall circuit](https://github.com/conn3xorg/circuit-firewall) can do it:
 
 ```hcl
 module "firewall" {
@@ -95,7 +95,7 @@ Before the circuit runs, the `conn3x_host` data source reads each host's family 
 | `ssh_known_hosts_file` | string | `null` | known_hosts file to check host keys against. When null, `~/.ssh/known_hosts`. Not used for a host object with `host_key`. |
 | `ssh_become` | bool | `false` | Run commands as root through sudo. Set it when `ssh_user` isn't root. |
 | `sites` | map(object) | `{}` | Sites to serve, by Caddy site address, such as `"example.com"`, `"http://localhost"` or `":8080"`. Each takes `reverse_proxy`, a list of upstreams such as `["localhost:3000"]`, or `root`, an absolute path to serve files from, but not both. `extra` is a string of further Caddyfile lines for the site. |
-| `email` | string | `null` | Email address for the ACME account Caddy gets certificates with. Let's Encrypt uses it for expiry warnings. |
+| `email` | string | `null` | Email address for the ACME account Caddy gets certificates with. |
 
 ## Outputs
 
