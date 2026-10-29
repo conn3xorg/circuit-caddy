@@ -35,6 +35,11 @@ jobs:
       - name: Validate the example
         working-directory: examples/local
         run: conn3x init -backend=false && conn3x validate
+      # Validating needs no Google Cloud credentials; applying it costs money,
+      # so CI doesn't.
+      - name: Validate the Google Cloud example
+        working-directory: examples/gcp
+        run: conn3x init -backend=false && conn3x validate
 
   e2e:
     needs: validate
