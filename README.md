@@ -1,5 +1,7 @@
 # circuit-caddy
 
+[![Conn3x grade](https://conn3x.org/circuits/caddy/grade.svg)](https://conn3x.org/circuits/caddy/grade)
+
 A Conn3x circuit that installs Caddy, writes its Caddyfile from a map of sites, and keeps it running. Give it a domain and an upstream and you get a reverse proxy with a certificate Caddy fetches and renews itself. Give it a directory and it serves the files in it.
 
 Every change to `sites` shows up in `conn3x plan` as a diff of the Caddyfile. The apply checks the new file with `caddy validate` before it touches the live one, so a typo fails the apply and the running server keeps its old config.
@@ -34,7 +36,7 @@ For a public name such as `photos.example.com`, Caddy gets a certificate from Le
 
 ```hcl
 module "firewall" {
-  source = "github.com/conn3xorg/circuit-firewall?ref=v0.2.0"
+  source = "github.com/conn3xorg/circuit-firewall?ref=v0.2.1"
 
   hosts = { edge = "203.0.113.10" }
   allow = [{ port = "80/tcp" }, { port = "443/tcp" }]
