@@ -175,7 +175,7 @@ locals {
 
 # The circuits run side by side, as the user cloud-init made, through sudo.
 module "baseline" {
-  source = "github.com/conn3xorg/circuit-baseline?ref=v0.1.0"
+  source = "github.com/conn3xorg/circuit-baseline?ref=v0.1.1"
 
   hosts                = local.hosts
   ssh_user             = var.ssh_user
@@ -200,7 +200,7 @@ module "hardening" {
 }
 
 module "firewall" {
-  source = "github.com/conn3xorg/circuit-firewall?ref=v0.2.0"
+  source = "github.com/conn3xorg/circuit-firewall?ref=v0.2.1"
 
   hosts                = local.hosts
   ssh_user             = var.ssh_user
@@ -211,7 +211,7 @@ module "firewall" {
 }
 
 module "caddy" {
-  source = "github.com/conn3xorg/circuit-caddy?ref=v0.2.0"
+  source = "github.com/conn3xorg/circuit-caddy?ref=v0.2.1"
 
   hosts                = local.hosts
   ssh_user             = var.ssh_user
