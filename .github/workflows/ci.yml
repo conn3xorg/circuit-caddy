@@ -89,7 +89,10 @@ jobs:
       - name: Restart the host, then check caddy came back
         run: |
           sudo podman restart circuit-caddy
-          sudo podman exec circuit-caddy timeout 60 systemctl is-system-running --wait || true
+          for _ in $(seq 60); do
+            case $(sudo podman exec circuit-caddy systemctl is-system-running 2>/dev/null) in running|degraded) break ;; esac
+            sleep 1
+          done
           sudo podman exec circuit-caddy systemctl is-active caddy
       - name: Fetch the static page through the reverse proxy after the restart
         run: *fetch
