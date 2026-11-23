@@ -109,7 +109,7 @@ Before the circuit runs, the `conn3x_host` data source reads each host's family 
 
 ## Requirements
 
-Requires Conn3x v0.6.5 or later and systemd on each host, with outbound HTTPS to dl.cloudsmith.io on Debian and Ubuntu, or github.com on the Red Hat family.
+Requires Conn3x v0.29.0 or later and systemd on each host, with outbound HTTPS to dl.cloudsmith.io on Debian and Ubuntu, or github.com on the Red Hat family.
 
 ## Tested on
 
