@@ -184,8 +184,9 @@ circuit "caddy" {
   # Restarts Caddy when the pinned version or the unit file changes, so the
   # new binary and unit run.
   step "upgraded" {
-    command {
-      command  = "systemctl daemon-reload && systemctl try-restart caddy"
+    service_action {
+      name     = "caddy"
+      action   = "try-restart"
       triggers = { version = local.version, unit = filesha256("${path.module}/files/caddy.service") }
     }
     depends_on = [conn3x_package.caddy_deb__caddy, conn3x_file.caddy_rpm__unit]
