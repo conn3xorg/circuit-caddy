@@ -27,13 +27,13 @@ locals {
   os     = { for name, h in var.hosts : name => try(h.os, data.conn3x_host.facts[name].os_id) }
   family = { for name, o in local.os : name => contains(["debian", "ubuntu"], o) ? "debian" : "redhat" }
 
-  version = "2.11.7"
+  version = "2.11.9"
 
   # SHA-256 of each release archive. Caddy publishes SHA-512 sums; these were
   # computed from archives that matched them.
   archive_sha256 = {
-    amd64 = "727b91701a392de6ebc5027509f548bf39979e5216340d0faed8fa5e69c84f8b"
-    arm64 = "d8fc6d179a5d283028a472a5618564f6ad8a86fed513e64f032b3b0b7cc45e42"
+    amd64 = "5b8cb7faf8726a2028ad96a66e54e6e81e8f361bc6175e5d22bbd997cc5177fb"
+    arm64 = "5e377cff994fc9362a6fcf695c53f226cfca3a3ef85bd3a3687cf252d6310165"
   }
   goarch = { x86_64 = "amd64", aarch64 = "arm64" }
 
