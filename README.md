@@ -61,7 +61,7 @@ To try it on a throwaway container first, see [examples/local](examples/local). 
 
 On each host, in order:
 
-1. Installs Caddy 2.11.7.
+1. Installs Caddy 2.11.9.
    - On Debian and Ubuntu, from Caddy's own apt repository at `dl.cloudsmith.io/public/caddy/stable`, with the signing key in [files](files), copied from that repository. An apt pin in `/etc/apt/preferences.d/caddy` keeps `apt upgrade` from moving it off that version.
    - On Rocky Linux, Fedora and the rest of the Red Hat family, from the release archive on GitHub, checked against a pinned SHA-256. Caddy's RPMs come from a COPR repository that can trail releases and can't be pinned to an exact version, so the circuit does what the package would: it creates the `caddy` user and group with a home of `/var/lib/caddy`, links `/usr/bin/caddy` to the binary under `/opt/caddy`, and installs Caddy's own [unit file](files/caddy.service) as `/etc/systemd/system/caddy.service`.
 2. Reloads systemd and restarts Caddy when the version the circuit pins or its unit file changes, so a new release of this circuit runs the new binary.
@@ -105,7 +105,7 @@ Before the circuit runs, the `conn3x_host` data source reads each host's family 
 | Name | Description |
 | --- | --- |
 | `caddyfile` | The Caddyfile the circuit writes to `/etc/caddy/Caddyfile`. |
-| `version` | The Caddy version the circuit installs, such as `"2.11.7"`. |
+| `version` | The Caddy version the circuit installs, such as `"2.11.9"`. |
 
 ## Requirements
 
